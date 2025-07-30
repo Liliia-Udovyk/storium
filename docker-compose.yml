@@ -1,0 +1,40 @@
+services:
+  postgres:
+    container_name: storium-db
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: storium-backend
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+  frontend:
+    container_name: storium-frontend
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
