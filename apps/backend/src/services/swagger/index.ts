@@ -6,6 +6,7 @@ const options = new DocumentBuilder()
   .setDescription('API for file and folder management with user permissions')
   .setVersion('1.0')
   .addBearerAuth()
+  .addBasicAuth()
   .addApiKey(
     {
       type: 'apiKey',
