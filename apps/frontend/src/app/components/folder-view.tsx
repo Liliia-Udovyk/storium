@@ -77,7 +77,7 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
           <h2 className="text-xl font-semibold text-gray-900">Folders</h2>
           <button
             onClick={() => setShowCreateFolderModal(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             + New Folder
           </button>
@@ -96,7 +96,7 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
           <h2 className="text-xl font-semibold text-gray-900">Files</h2>
           <button
             onClick={() => setShowUploadFileModal(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             + Upload File
           </button>
