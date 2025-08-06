@@ -75,8 +75,11 @@ export class FilesController {
   @Get()
   @ApiOperation({ summary: 'Get all files of the current user' })
   @ApiResponse({ status: 200, description: 'List of files', type: [File] })
-  findAll(@Req() req: Request & { user: User }) {
-    return this.filesService.findAll(req.user);
+  findAll(
+    @Req() req: Request & { user: User },
+    @Query('folder') folderId?: string,
+  ) {
+    return this.filesService.findAll(req.user, folderId ?? null);
   }
 
   @Get(':id')

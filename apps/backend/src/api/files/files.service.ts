@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, IsNull, Repository } from 'typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuid } from 'uuid';
@@ -35,9 +35,17 @@ export class FilesService {
     });
   }
 
-  async findAll(owner: User): Promise<File[]> {
+  async findAll(owner: User, folderId: string | null): Promise<File[]> {
+    const where: FindOptionsWhere<File> = { owner };
+
+    if (folderId === 'null') {
+      where.folder = IsNull();
+    } else if (folderId !== null) {
+      where.folder = { id: Number(folderId) };
+    }
+
     return this.fileRepository.find({
-      where: { owner },
+      where,
       relations: ['folder'],
     });
   }
@@ -112,6 +120,12 @@ export class FilesService {
 
   async remove(id: number, owner: User): Promise<void> {
     const file = await this.findOne(id, owner);
+
+    const filePath = path.join(process.cwd(), file.url);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
     await this.fileRepository.remove(file);
   }
 }

@@ -19,7 +19,7 @@ const Breadcrumbs = ({
       >
         Root
       </span>
-      {breadcrumbs.map((crumb, i) => (
+      {breadcrumbs.map((crumb) => (
         <span key={crumb.id}>
           {' / '}
           <span
