@@ -1,17 +1,37 @@
-import { useFolderBreadcrumb } from '@/utils/queries';
+import { useFolderBreadcrumb } from "@/utils/queries";
 
-const Breadcrumbs = ({ folderId }: { folderId?: number }) => {
+const Breadcrumbs = ({
+  folderId,
+  onNavigate,
+}: {
+  folderId?: number | null;
+  onNavigate?: (id: number | null) => void;
+}) => {
   const { breadcrumbs, isLoading, isError } = useFolderBreadcrumb(folderId);
 
-  if (isLoading) return <p>Loading breadcrumbs...</p>;
-  if (isError) return <p>Error loading breadcrumbs.</p>;
+  if (isLoading || isError) return <p className="text-sm text-gray-500">...</p>;
 
   return (
-    <nav>
+    <nav className="text-sm text-gray-600 mb-4">
+      <span
+        onClick={() => (onNavigate ? onNavigate(null) : (window.location.href = '/'))}
+        className="cursor-pointer hover:underline text-blue-600"
+      >
+        Root
+      </span>
       {breadcrumbs.map((crumb, i) => (
         <span key={crumb.id}>
-          {crumb.name}
-          {i < breadcrumbs.length - 1 && ' / '}
+          {' / '}
+          <span
+            onClick={() =>
+              onNavigate
+                ? onNavigate(crumb.id)
+                : (window.location.href = `/folders/${crumb.id}`)
+            }
+            className="cursor-pointer hover:underline text-blue-600"
+          >
+            {crumb.name}
+          </span>
         </span>
       ))}
     </nav>

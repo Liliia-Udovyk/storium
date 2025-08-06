@@ -10,81 +10,60 @@ import { Folder, StoredFile, BreadcrumbItem, CreateFolderDto, CreateFileDto } fr
 const fetcher = <T>(url: string) =>
   http<T>({ url }).then(res => res.data);
 
-export const useGetFolders = (parentId: number | null) => {
-  const url = parentId === null ? '/folders?parent=null' : `/folders?parent=${parentId}`;
-  const { data, error, mutate } = useSWR<Folder[]>(url, fetcher);
-
-  const revalidate = useCallback(() => mutate(), [mutate]);
-
-  return {
-    folders: data || [],
-    isLoading: !error && !data,
-    isError: error,
-    revalidate,
-  };
-};
-
-export const useGetFiles = (folderId: number | null) => {
-  const url = folderId === null ? '/files?folder=null' : `/files?folder=${folderId}`;
-  const { data, error, mutate } = useSWR<StoredFile[]>(url, fetcher);
-
-  const revalidate = useCallback(() => mutate(), [mutate]);
-
-  return {
-    files: data || [],
-    isLoading: !error && !data,
-    isError: error,
-    revalidate,
-  };
-};
-
-export const useFolder = (folderId?: number | null) => {
-  const key = folderId === null ? '/folders?parentId=null' : folderId ? `/folders/${folderId}` : null;
-
+export const useFolder = (folderId: number | null) => {
   const { data, error, mutate } = useSWR<Folder>(
-    key,
-    () => http<Folder>({ url: key! }).then(res => res.data)
+    folderId ? `/folders/${folderId}` : null,
+    fetcher
   );
 
   return {
     folder: data,
-    isLoading: !error && !data,
+    isLoading: !data && !error,
     isError: error,
-    mutate,
+    refresh: mutate,
   };
 };
 
 export const useRootFolders = () => {
-  const { data, error, mutate } = useSWR<Folder[]>('/folders?parentId=null', () =>
-    http<Folder[]>({ url: '/folders?parentId=null' }).then(res => res.data)
+  const { data, error, mutate } = useSWR<Folder[]>(
+    '/folders?parent=null',
+    fetcher
   );
-  console.log('🚀 ~ useRootFolders ~ data:', data);
 
   return {
     folders: data || [],
-    isLoading: !error && !data,
+    isLoading: !data && !error,
     isError: error,
-    mutate,
+    refresh: mutate,
   };
 };
 
-export function useFolderBreadcrumb(folderId?: number | null) {
-  const shouldFetch = folderId !== undefined && folderId !== null;
+export const useRootFiles = () => {
+  const { data, error, mutate } = useSWR<StoredFile[]>(
+    '/files?folder=null',
+    fetcher
+  );
 
+  return {
+    files: data || [],
+    isLoading: !data && !error,
+    isError: error,
+    refresh: mutate,
+  };
+};
+
+export const useFolderBreadcrumb = (folderId?: number | null) => {
   const { data, error } = useSWR<BreadcrumbItem[]>(
-    shouldFetch ? `/folders/${folderId}/breadcrumb` : null,
-    async (url: string) => {
-      const res = await http<{ data: BreadcrumbItem[] }>({ url });
-      return res.data.data;
-    }
+    folderId ? `/folders/${folderId}/breadcrumb` : null,
+    fetcher
   );
 
   return {
     breadcrumbs: data || [],
-    isLoading: !error,
+    isLoading: !data && !error,
     isError: error,
   };
-}
+};
 
 export const useCreateFolder = () => {
   const create = async (data: CreateFolderDto) => {
@@ -157,7 +136,7 @@ export const useUploadFileMutation = () => {
       });
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
-      const message = err?.response?.data?.message || 'Failed to delete project';
+      const message = err?.response?.data?.message || 'Failed to upload file';
       toast.error(message);
       setError(err);
       throw err;
