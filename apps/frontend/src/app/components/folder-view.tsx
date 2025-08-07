@@ -49,7 +49,7 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
   return (
     <div className="max-w-6xl mx-auto py-10 px-6">
       <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard" className="text-2xl font-bold text-blue-800 hover:underline">
+        <Link href="/" className="text-2xl font-bold text-blue-800 cursor-pointer">
           Storium
         </Link>
       </div>
