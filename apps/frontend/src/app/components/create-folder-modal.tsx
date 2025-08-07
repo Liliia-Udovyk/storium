@@ -2,38 +2,38 @@
 
 import { useState } from 'react';
 
-import { Folder } from '@/interfaces';
 import Modal from './ui/modal';
+import { createFolder } from '@/utils/queries/folder';
 
 interface CreateFolderModalProps {
   parentId: number | null;
   onClose: () => void;
   onSuccess?: () => void;
-  createFolder: (data: { name: string; parentId: number | null }) => Promise<Folder>;
-  isLoading: boolean;
-  error: Error | null;
 }
 
 export default function CreateFolderModal({
   parentId,
   onClose,
   onSuccess,
-  createFolder,
-  isLoading,
-  error,
 }: CreateFolderModalProps) {
   const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async () => {
     if (!name.trim()) return;
 
     try {
+      setIsLoading(true);
       await createFolder({ name, parentId });
       onSuccess?.();
       onClose();
     } catch (err) {
       console.error(err);
+      setError('Failed to create folder. Please try again.');
     }
+    setIsLoading(false);
+    setName('');
   };
 
   return (
@@ -45,7 +45,7 @@ export default function CreateFolderModal({
       isLoading={isLoading}
       isDisabled={!name.trim()}
       confirmText="Create"
-      error={error?.message ?? null}
+      error={error ?? null}
     >
       <input
         type="text"

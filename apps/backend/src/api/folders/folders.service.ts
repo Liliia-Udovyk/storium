@@ -9,7 +9,6 @@ import { ILike, IsNull, Repository } from 'typeorm';
 
 import { Folder } from 'src/services/typeorm/entities/folder.entity';
 import { User } from 'src/services/typeorm/entities/user.entity';
-import { File } from 'src/services/typeorm/entities/file.entity';
 import { CreateFolderDto } from './dto/create-folder.dto';
 import { UpdateFolderDto } from './dto/update-folder.dto';
 import { FolderBreadcrumbDto } from './dto/folder-breadcrumb.dto';
@@ -92,7 +91,12 @@ export class FoldersService {
   }
 
   async clone(id: number, owner: User, parent?: Folder): Promise<Folder> {
-    const folder = await this.findOne(id, owner);
+    const folder = await this.folderRepository.findOne({
+      where: { id, owner },
+      relations: ['parent', 'folders', 'files'],
+    });
+
+    if (!folder) throw new NotFoundException('Folder not found');
 
     const clonedFolder = this.folderRepository.create({
       name: folder.name + ' (copy)',
@@ -131,7 +135,20 @@ export class FoldersService {
   }
 
   async remove(id: number, owner: User): Promise<void> {
-    const folder = await this.findOne(id, owner);
+    const folder = await this.folderRepository.findOne({
+      where: { id, owner },
+      relations: ['folders', 'files'],
+    });
+    if (!folder) throw new NotFoundException('Folder not found');
+
+    for (const childFolder of folder.folders || []) {
+      await this.remove(childFolder.id, owner);
+    }
+
+    for (const file of folder.files || []) {
+      await this.filesService.remove(file.id, owner);
+    }
+
     await this.folderRepository.remove(folder);
   }
 }

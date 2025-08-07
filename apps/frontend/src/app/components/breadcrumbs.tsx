@@ -1,4 +1,4 @@
-import { useFolderBreadcrumb } from "@/utils/queries";
+import { useFolderBreadcrumb } from '@/utils/queries/folder';
 
 const Breadcrumbs = ({
   folderId,

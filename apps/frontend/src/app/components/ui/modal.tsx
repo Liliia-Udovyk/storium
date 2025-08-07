@@ -7,7 +7,7 @@ interface ModalProps {
   title: string;
   description?: string;
   onClose: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   showFooter?: boolean;
   confirmText?: string;
   cancelText?: string;

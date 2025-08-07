@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
-import { useRootFolders, useRootFiles, useFolder } from '@/utils/queries';
+import { useRootFolders, useFolder } from '@/utils/queries/folder';
+import { useRootFiles } from '@/utils/queries/file';
 
 export function useFolderContent(folderId: number | null) {
   const isRoot = folderId === null;

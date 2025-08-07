@@ -10,10 +10,7 @@ import CreateFolderModal from './create-folder-modal';
 import UploadFileModal from './upload-file-modal';
 import Loader from './ui/loader';
 import { useFolderContent } from '../hooks/useFolderContent';
-import {
-  useCreateFolderMutation,
-  useUploadFileMutation,
-} from '@/utils/queries';
+import { useUploadFileMutation } from '@/utils/queries/file';
 
 interface FolderViewProps {
   folderId: number | null;
@@ -32,12 +29,6 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
     errors,
     refreshAll,
   } = useFolderContent(folderId);
-
-  const {
-    createFolder,
-    isLoading: creatingFolder,
-    error: createFolderError,
-  } = useCreateFolderMutation();
 
   const {
     uploadFile,
@@ -87,7 +78,7 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
         ) : errors.folders ? (
           <p className="text-red-500">Failed to load folders.</p>
         ) : (
-          <FolderList folders={folders ?? []} selectedId={null} />
+          <FolderList folders={folders ?? []} refresh={refreshAll} />
         )}
       </section>
 
@@ -106,7 +97,7 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
         ) : errors.files ? (
           <p className="text-red-500">Failed to load files.</p>
         ) : (
-          <FileList files={files ?? []} />
+          <FileList files={files ?? []} refresh={refreshAll} />
         )}
       </section>
 
@@ -115,9 +106,6 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
           parentId={folderId}
           onClose={() => setShowCreateFolderModal(false)}
           onSuccess={handleFolderCreated}
-          createFolder={createFolder}
-          isLoading={creatingFolder}
-          error={createFolderError ?? null}
         />
       )}
 

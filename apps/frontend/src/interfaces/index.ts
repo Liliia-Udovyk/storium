@@ -29,6 +29,10 @@ export interface CreateFolderDto {
   parentId?: number | null;
 }
 
+export interface UpdateFolderDto {
+  name: string;
+}
+
 export interface CreateFileDto {
   name: string;
   mimeType: string;
@@ -37,10 +41,6 @@ export interface CreateFileDto {
   folderId?: number | null;
 }
 
-export interface UploadFileDto {
-  file: StoredFile | Blob;
+export interface UpdateFileDto {
   name: string;
-  mimeType: string;
-  size: number;
-  folderId: number | null;
 }

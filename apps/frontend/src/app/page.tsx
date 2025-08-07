@@ -1,5 +1,6 @@
-import FolderView from '@/app/components/folder-view';
+import { redirect } from 'next/navigation';
 
-export default function DashboardPage() {
-  return <FolderView folderId={null} showHeader={false} />;
+export default async function RootPage() {
+
+  redirect('/folders');
 }

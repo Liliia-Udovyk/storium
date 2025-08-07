@@ -114,7 +114,6 @@ export class FilesController {
   @ApiResponse({ status: 201, description: 'Cloned file', type: File })
   clone(
     @Param('id', ParseIntPipe) id: number,
-    @Query('folderId') folderId: number,
     @Req() req: Request & { user: User },
   ) {
     return this.filesService.clone(id, req.user);
