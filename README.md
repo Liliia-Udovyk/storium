@@ -1,6 +1,6 @@
 # Storium — File Storage App
 
-This is a full-stack file storage system with support for folder hierarchies, file management.
+This is a full-stack file storage system with support for folder hierarchies and file management.
 Built with **NestJS** (backend) and **Next.js** (frontend).
 
 ## ⚙️ Tech Stack

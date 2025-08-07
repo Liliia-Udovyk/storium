@@ -76,7 +76,7 @@ export class FoldersController {
     return this.foldersService.update(id, updateFolderDto, req.user);
   }
 
-  @Get('search')
+  @Get('/actions/search')
   @ApiOperation({ summary: 'Search folders by name' })
   @ApiResponse({ status: 200, description: 'Found folders', type: [Folder] })
   search(@Query('name') name: string, @Req() req: Request & { user: User }) {

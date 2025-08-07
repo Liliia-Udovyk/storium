@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 
@@ -109,7 +110,7 @@ export default function FileList({ files, refresh }: FileListProps) {
 
           return (
             <li key={file.id} className="relative group">
-              <a
+              <Link
                 href={fileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -119,12 +120,10 @@ export default function FileList({ files, refresh }: FileListProps) {
                       ? 'border-blue-600 bg-blue-50 shadow-lg'
                       : 'border-gray-200 bg-white hover:shadow-md'
                   }`}
-                title={file.name}
-                onClick={() => setSelectedId(file.id)}
               >
                 <DocumentIcon className="h-10 w-10 text-blue-500" />
                 <span className="text-center text-sm font-medium truncate w-full">{file.name}</span>
-              </a>
+              </Link>
 
               <div className="absolute top-2 right-2 group-hover:opacity-100 transition">
                 <ActionsDropdown

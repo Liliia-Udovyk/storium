@@ -87,7 +87,7 @@ export const deleteFile = (id: number) =>
 
 export const useSearchFiles = (name: string | null) => {
   const { data, error, mutate } = useSWR<StoredFile[]>(
-    name ? `/files/search?name=${encodeURIComponent(name)}` : null,
+    name ? `/files/actions/search?name=${encodeURIComponent(name)}` : null,
     fetcher
   );
 

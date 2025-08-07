@@ -11,6 +11,7 @@ import UploadFileModal from './upload-file-modal';
 import Loader from './ui/loader';
 import { useFolderContent } from '../hooks/useFolderContent';
 import { useUploadFileMutation } from '@/utils/queries/file';
+import Search from './search';
 
 interface FolderViewProps {
   folderId: number | null;
@@ -48,19 +49,20 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-6">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/" className="text-2xl font-bold text-blue-800 cursor-pointer">
+      <div className="flex items-center justify-between gap-3 mb-8">
+        <Link href="/" className="text-2xl font-bold text-blue-800 hover:underline">
           Storium
         </Link>
+        <Search />
       </div>
 
       {showHeader && (
-        <header className="mb-6">
+        <div className="mb-6">
           <h1 className="text-xl font-bold text-blue-700">
             {folder?.name || 'Folder'}
           </h1>
           <Breadcrumbs folderId={folderId} />
-        </header>
+        </div>
       )}
 
       <section className="mb-10">

@@ -59,7 +59,7 @@ export const deleteFolder = (id: number) =>
 
 export const useSearchFolders = (name: string | null) => {
   const { data, error, mutate } = useSWR<Folder[]>(
-    name ? `/folders/search?name=${encodeURIComponent(name)}` : null,
+    name ? `/folders/actions/search?name=${encodeURIComponent(name)}` : null,
     fetcher
   );
 

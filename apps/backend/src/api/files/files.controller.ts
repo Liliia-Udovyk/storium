@@ -103,6 +103,7 @@ export class FilesController {
     return this.filesService.update(id, updateFileDto, req.user);
   }
 
+  @Get('/actions/search')
   @ApiOperation({ summary: 'Search files by name' })
   @ApiResponse({ status: 200, description: 'Found files', type: [File] })
   search(@Query('name') name: string, @Req() req: Request & { user: User }) {
