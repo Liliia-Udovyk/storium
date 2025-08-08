@@ -7,6 +7,7 @@ import { Search, Folder, File, X } from 'lucide-react';
 import { useSearchFolders } from '@/utils/queries/folder';
 import { useSearchFiles } from '@/utils/queries/file';
 import Loader from './ui/loader';
+import Button from './ui/button';
 
 export default function SearchComponent() {
   const [query, setQuery] = useState('');
@@ -72,13 +73,12 @@ export default function SearchComponent() {
       </div>
 
       {query && (
-        <button
-          type="button"
+        <Button
+          variant="icon"
           onClick={handleClear}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-        >
-          <X size={18} />
-        </button>
+          className="absolute right-3 top-1/2 transform -translate-y-1/2"
+          icon={<X size={18} />}
+        />
       )}
 
       {dropdownOpen && (

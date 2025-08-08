@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { Plus, Upload } from 'lucide-react';
 
 import Breadcrumbs from './breadcrumbs';
 import FolderList from './folder-list';
@@ -12,6 +13,7 @@ import Loader from './ui/loader';
 import { useFolderContent } from '../hooks/useFolderContent';
 import { useUploadFileMutation } from '@/utils/queries/file';
 import Search from './search';
+import Button from './ui/button';
 
 interface FolderViewProps {
   folderId: number | null;
@@ -68,12 +70,13 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
       <section className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900">Folders</h2>
-          <button
+          <Button
+            variant="primary"
+            icon={<Plus size={16} />}
             onClick={() => setShowCreateFolderModal(true)}
-            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            + New Folder
-          </button>
+            New Folder
+          </Button>
         </div>
         {loading && !folders.length ? (
           <Loader />
@@ -87,12 +90,13 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900">Files</h2>
-          <button
+          <Button
+            variant="primary"
+            icon={<Upload size={16} />}
             onClick={() => setShowUploadFileModal(true)}
-            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            + Upload File
-          </button>
+            Upload File
+          </Button>
         </div>
         {loading && !files.length ? (
           <Loader />

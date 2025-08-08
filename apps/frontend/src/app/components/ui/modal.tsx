@@ -1,7 +1,9 @@
 'use client';
 
-import { X } from 'lucide-react';
 import { ReactNode } from 'react';
+import { X } from 'lucide-react';
+
+import Button from './button';
 
 interface ModalProps {
   title: string;
@@ -38,13 +40,13 @@ export default function Modal({
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center backdrop-blur-sm">
       <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-xl relative">
         {/* Close icon */}
-        <button
+        <Button
+          variant="icon"
           onClick={onClose}
-          className="cursor-pointer absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          icon={<X className="w-5 h-5" />}
           aria-label="Close"
-        >
-          <X className="w-5 h-5" />
-        </button>
+          className="absolute top-4 right-4"
+        />
 
         {/* Title */}
         <h2 className="text-xl font-semibold text-gray-900 mb-1">{title}</h2>
@@ -64,20 +66,20 @@ export default function Modal({
 
         {showFooter && (
           <div className="flex justify-end gap-3 mt-6">
-            <button
+            <Button
+              variant="secondary"
               onClick={onCancel || onClose}
               disabled={isLoading}
-              className="cursor-pointer px-4 py-2 text-gray-600 hover:bg-gray-100 rounded transition disabled:cursor-not-allowed"
             >
               {cancelText}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
               onClick={onConfirm}
               disabled={isDisabled || isLoading}
-              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               {isLoading ? `${confirmText}...` : confirmText}
-            </button>
+            </Button>
           </div>
         )}
       </div>

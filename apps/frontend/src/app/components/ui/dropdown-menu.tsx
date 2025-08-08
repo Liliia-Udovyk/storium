@@ -2,7 +2,8 @@
 
 import { FC, useState, useRef, useEffect } from 'react';
 import { EllipsisVerticalIcon } from 'lucide-react';
-import clsx from 'clsx';
+
+import Button from './button';
 
 interface DropdownAction {
   label: string;
@@ -38,16 +39,12 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({ actions, buttonClassName }
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
-      <button
-        onClick={toggleDropdown}
-        className={clsx(
-          'p-1.5 rounded-md hover:bg-muted transition',
-          'text-gray-500 hover:text-blue-900 cursor-pointer',
-          buttonClassName
-        )}
-      >
-        <EllipsisVerticalIcon className="w-5 h-5" />
-      </button>
+    <Button
+      variant="icon"
+      onClick={toggleDropdown}
+      className={buttonClassName}
+      icon={<EllipsisVerticalIcon className="w-5 h-5" />}
+    />
 
       {isOpen && (
         <div className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-white shadow-lg border border-gray-200">

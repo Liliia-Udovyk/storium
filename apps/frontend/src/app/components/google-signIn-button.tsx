@@ -1,6 +1,6 @@
 import { FcGoogle } from 'react-icons/fc';
 
-import { Button } from './ui/button';
+import Button from './ui/button';
 
 export const GoogleSignInButton = () => {
   const handleLogin = () => {
@@ -11,8 +11,12 @@ export const GoogleSignInButton = () => {
   };
 
   return (
-    <Button onClick={handleLogin} className="flex items-center justify-center gap-2" type="button" variant="secondary" aria-label="Sign in with Google">
-      <FcGoogle size={20} />
+    <Button
+      onClick={handleLogin}
+      variant="secondary"
+      icon={<FcGoogle size={20} />}
+      aria-label="Sign in with Google"
+    >
       Sign in with Google
     </Button>
   );
