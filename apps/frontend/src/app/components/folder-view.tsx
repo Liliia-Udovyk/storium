@@ -1,26 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { Plus, Upload } from 'lucide-react';
 
+import { useFolderContent } from '../hooks/useFolderContent';
+import { useUploadFile } from '../hooks/useUploadFile';
+import Loader from './ui/loader';
+import Button from './ui/button';
+import Header from './header';
 import Breadcrumbs from './breadcrumbs';
 import FolderList from './folder-list';
 import FileList from './file-list';
 import CreateFolderModal from './create-folder-modal';
 import UploadFileModal from './upload-file-modal';
-import Loader from './ui/loader';
-import { useFolderContent } from '../hooks/useFolderContent';
-import { useUploadFileMutation } from '@/utils/queries/file';
-import Search from './search';
-import Button from './ui/button';
 
 interface FolderViewProps {
   folderId: number | null;
-  showHeader?: boolean;
+  showBreadcrumbs?: boolean;
 }
 
-export default function FolderView({ folderId, showHeader = true }: FolderViewProps) {
+export default function FolderView({ folderId, showBreadcrumbs = true }: FolderViewProps) {
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
@@ -37,7 +36,7 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
     uploadFile,
     isLoading: uploadingFile,
     error: uploadFileError,
-  } = useUploadFileMutation();
+  } = useUploadFile();
 
   const handleFolderCreated = async () => {
     refreshAll();
@@ -51,14 +50,9 @@ export default function FolderView({ folderId, showHeader = true }: FolderViewPr
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-6">
-      <div className="flex items-center justify-between gap-3 mb-8">
-        <Link href="/" className="text-2xl font-bold text-blue-800 hover:underline">
-          Storium
-        </Link>
-        <Search />
-      </div>
+      <Header />
 
-      {showHeader && (
+      {showBreadcrumbs && (
         <div className="mb-6">
           <h1 className="text-xl font-bold text-blue-700">
             {folder?.name || 'Folder'}
